@@ -28,4 +28,12 @@ else
 exit 0
 fi
 
+*Создадим Āнит длā сервиса:*
+[root@localhost ~]# vi /etc/systemd/system/watchlog.service
 
+[Unit]
+Description=My watchlog service
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/sysconfig/watchdog
+ExecStart=/opt/watchlog.sh $WORD $LOG
