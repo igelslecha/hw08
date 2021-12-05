@@ -1,11 +1,14 @@
 # hw08
 **1. Написать сервис, который будет раз в 30 секунд мониторить лог на предмет наличия ключевого слова. Файл и слово должны задаваться в /etc/sysconfig**
+
 *Установил для работы новую виртуальную машину centos/8*
-*Создал файл с конфигурацией для сервиса в директории /etc/sysconfig - из неё сервис будет братþ необходимые переменные.*
+
+*Создал файл с конфигурацией для сервиса в директории /etc/sysconfig - из неё сервис будет брать необходимые переменные.*
+
 [root@localhost ~]# vi /etc/sysconfig/watchlog
-* # Configuration file for my watchdog service*
-*# Place it to /etc/sysconfig*
-*# File and word in that file that we will be monit*
+# Configuration file for my watchdog service
+# Place it to /etc/sysconfig
+# File and word in that file that we will be monit
 WORD="ALaRm"
 LOG=/var/log/watchlog.log
 
