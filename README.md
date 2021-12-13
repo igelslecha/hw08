@@ -274,6 +274,7 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   [root@localhost ~]# ss -tnulp | grep httpd
 
   tcp     LISTEN   0        128                    *:8080                *:*       users:(("httpd",pid=22556,fd=4),("httpd",pid=22555,fd=4),("httpd",pid=22554,fd=4),("httpd",pid=22551,fd=4))
-tcp     LISTEN   0        128                    *:80                  *:*       users:(("httpd",pid=22333,fd=4),("httpd",pid=22332,fd=4),("httpd",pid=22331,fd=4),("httpd",pid=22328,fd=4))
+
+  tcp     LISTEN   0        128                    *:80                  *:*       users:(("httpd",pid=22333,fd=4),("httpd",pid=22332,fd=4),("httpd",pid=22331,fd=4),("httpd",pid=22328,fd=4))
 
   [root@localhost ~]#
