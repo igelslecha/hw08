@@ -14,6 +14,7 @@
 \# File and word in that file that we will be monit
 
 WORD="ALaRm"
+
 LOG=/var/log/watchlog.log
 
 *Затем создаем /var/log/watchlog.log и пишем туда строки на своё усмотрение, плюс ключевое слово ‘ALaRm’*
@@ -21,7 +22,8 @@ LOG=/var/log/watchlog.log
 *Создаю скрипт*
 
 [root@localhost ~]# vi /opt/watchlog.sh
-#!/bin/bash
+
+\#!/bin/bash
 WORD=$1
 LOG=$2
 DATE=`date`
