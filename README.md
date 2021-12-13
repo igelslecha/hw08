@@ -6,9 +6,10 @@
 *Создал файл с конфигурацией для сервиса в директории /etc/sysconfig - из неё сервис будет брать необходимые переменные.*
 
 [root@localhost ~]# vi /etc/sysconfig/watchlog
-# Configuration file for my watchdog service
-# Place it to /etc/sysconfig
-# File and word in that file that we will be monit
+
+\# Configuration file for my watchdog service
+\# Place it to /etc/sysconfig
+\# File and word in that file that we will be monit
 WORD="ALaRm"
 LOG=/var/log/watchlog.log
 
