@@ -278,3 +278,97 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   tcp     LISTEN   0        128                    *:80                  *:*       users:(("httpd",pid=22333,fd=4),("httpd",pid=22332,fd=4),("httpd",pid=22331,fd=4),("httpd",pid=22328,fd=4))
 
   [root@localhost ~]#
+  
+  **4.  Скачать демо-версию Atlassian Jira и переписать основной скрипт запуска на unit-файл.**
+  
+  *Устанавливаю wget*
+  
+  [root@localhost ~]# yum install wget
+
+  *качаю jiry*
+  
+  
+[root@localhost ~]# wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.21.0-x64.bin
+
+  *сделал файл исполняемым*
+  
+  
+[root@localhost ~]# chmod u+x atlassian-jira-software-8.21.0-x64.bin
+
+  *устанавливаю*
+  
+  [root@localhost ~]# ./atlassian-jira-software-8.21.0-x64.bin
+
+  *устанавливаю по умолчанию рекомендованное 1, порты меняю на 8081 и 8006 соотвественно, так как заняты из-за выполнения предыдущих заданий*
+  
+  
+  *создаю юнит*
+  
+  [root@localhost jira]# vi /etc/systemd/system/jira.service
+
+  After=network.target
+
+  [Service]
+
+  Type=forking
+
+  PIDFile=/opt/atlassian/jira/work/catalina.pid
+
+  ExecStart=/opt/atlassian/jira/bin/start-jira.sh
+
+  ExecStop=/opt/atlassian/jira/bin/stop-jira.sh
+
+  [Install]
+
+  WantedBy=multi-user.target
+
+ *перегружаю и запускаю жиру, но... видимо много чего ещё нужно допиливать, чтобы её запустить*
+
+  [root@localhost jira]# systemctl daemon-reload
+
+  [root@localhost jira]# systemctl enable jira.service
+
+  Synchronizing state of jira.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+
+  Executing: /usr/lib/systemd/systemd-sysv-install enable jira
+
+  service jira does not support chkconfig
+
+  [root@localhost jira]# systemctl start jira.service
+
+  Job for jira.service failed because the control process exited with error code.
+
+  See "systemctl status jira.service" and "journalctl -xe" for details.
+
+  [root@localhost jira]# systemctl status jira.service
+
+  ● jira.service
+  
+  Loaded: loaded (/etc/systemd/system/jira.service; disabled; vendor preset: disabled)
+  
+  Active: failed (Result: exit-code) since Tue 2021-12-14 12:05:12 UTC; 29s ago
+ 
+  Process: 25632 ExecStart=/opt/atlassian/jira/bin/start-jira.sh (code=exited, status=1/FAILURE)
+
+
+  Dec 14 12:05:07 localhost.localdomain start-jira.sh[25632]: Server startup logs are located in /opt/atlassian/jira/logs/catalina.>
+
+  Dec 14 12:05:11 localhost.localdomain start-jira.sh[25632]: Existing PID file found during start.
+
+  Dec 14 12:05:11 localhost.localdomain start-jira.sh[25632]: Tomcat appears to still be running with PID 24678. Start aborted.
+
+  Dec 14 12:05:11 localhost.localdomain start-jira.sh[25632]: If the following process is not a Tomcat process, remove the PID file>
+
+  Dec 14 12:05:11 localhost.localdomain start-jira.sh[25632]: UID          PID    PPID  C STIME TTY          TIME CMD
+
+  Dec 14 12:05:11 localhost.localdomain start-jira.sh[25632]: jira       24678       1  3 03:11 ?        00:19:08 /opt/atlassian/ji>
+
+  Dec 14 12:05:11 localhost.localdomain runuser[25636]: pam_unix(runuser:session): session closed for user jira
+
+  Dec 14 12:05:12 localhost.localdomain systemd[1]: jira.service: Control process exited, code=exited status=1
+
+  Dec 14 12:05:12 localhost.localdomain systemd[1]: jira.service: Failed with result 'exit-code'.
+
+  Dec 14 12:05:12 localhost.localdomain systemd[1]: Failed to start jira.service.
+
+  
