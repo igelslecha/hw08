@@ -313,6 +313,10 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   
   [root@localhost jira]# vi /etc/systemd/system/jira.service
 
+  [Unit]
+
+  Description=Atlassian Jira start for Otus
+
   After=network.target
 
   [Service]
