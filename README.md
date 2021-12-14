@@ -21,7 +21,12 @@ LOG=/var/log/watchlog.log
 
 [root@localhost ~]# vi /var/log/watchlog.log
 
-Hunter had seen alien and after louded ALERT
+hunter went to hunting in the deepest side of forest.
+
+when he had seen alien he louded ALERT
+
+and he isn't seen since this time.
+
 
 *Создаю скрипт*
 
