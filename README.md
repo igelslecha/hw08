@@ -169,6 +169,8 @@ WantedBy=multi-user.target
 
   *убеждаюсь, что сервис стартанул*
   
+  [root@localhost ~]# systemctl status spawn-fcgi
+  
    spawn-fcgi.service - Spawn-fcgi startup service by Otus
    Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; vendor preset: disabled)
    Active: active (running) since Mon 2021-12-13 08:04:13 UTC; 56s ago
