@@ -5,9 +5,8 @@
 
 *Создал файл с конфигурацией для сервиса в директории /etc/sysconfig - из неё сервис будет брать необходимые переменные.*
 
-[root@localhost ~]# vi /etc/sysconfig/watchlog
-
-```# Configuration file for my watchdog service
+```[root@localhost ~]# vi /etc/sysconfig/watchlog
+# Configuration file for my watchdog service
 # Place it to /etc/sysconfig
 # File and word in that file that we will be monit
 WORD="ALERT"
@@ -16,86 +15,59 @@ LOG=/var/log/watchlog.log
 
 *Затем создаем /var/log/watchlog.log и пишем туда строки на своё усмотрение, плюс ключевое слово ‘ALERT’*
 
-[root@localhost ~]# vi /var/log/watchlog.log
-
+```[root@localhost ~]# vi /var/log/watchlog.log
 hunter went to hunting in the deepest side of forest.
-
 when he had seen alien he louded ALERT
-
 and he isn't seen since this time.
-
+```
 
 *Создаю скрипт*
 
-[root@localhost ~]# vi /opt/watchlog.sh
-
-\#!/bin/bash
-
+```[root@localhost ~]# vi /opt/watchlog.sh
+#!/bin/bash
 WORD=$1
-
 LOG=$2
-
 DATE=`date`
-
 if grep $WORD $LOG &> /dev/null
-
 then
-
 logger "$DATE: I found word, Master!"
-
 else
-
 exit 0
-
 fi
+```
 
 *Сделал скрипт исполняемым*
 
-
-[root@localhost ~]# chmod u+x /opt/watchlog.sh
+```[root@localhost ~]# chmod u+x /opt/watchlog.sh
+```
 
 *Создал Юнит для сервиса:*
-[root@localhost ~]# vi /etc/systemd/system/watchlog.service
-
+```[root@localhost ~]# vi /etc/systemd/system/watchlog.service
 [Unit]
-
 Description=My watchlog service
-
 [Service]
-
 Type=oneshot
-
 EnvironmentFile=/etc/sysconfig/watchlog
-
 ExecStart=/opt/watchlog.sh $WORD $LOG
-
+```
 *Создал Юнит для запуска каждые 30 секунд*
-
-[root@localhost ~]# vi /etc/systemd/system/watchlog.timer
-
+```[root@localhost ~]# vi /etc/systemd/system/watchlog.timer
 [Unit]
-
 Description=Run watchlog script every 30 second
-
 [Timer]
-
-\# Run every 30 second
-
+# Run every 30 second
 OnUnitActiveSec=30
-
 Unit=watchlog.service
-
 [Install]
-
 WantedBy=multi-user.target
-
+```
 **Стартую таймер**
 
-[root@localhost ~]# systemctl start watchlog.timer
-
+```[root@localhost ~]# systemctl start watchlog.timer
+```
 ** Проверяю результат** 
 
-[root@localhost ~]# tail -f /var/log/messages
+```[root@localhost ~]# tail -f /var/log/messages
 Dec 13 07:37:08 localhost NetworkManager[643]: <info>  [1639381028.5275] device (eth1): state change: ip-config -> failed (reason 'ip-config-unavailable', sys-iface-state: 'managed')
 Dec 13 07:37:08 localhost NetworkManager[643]: <warn>  [1639381028.5301] device (eth1): Activation: failed for connection 'Wired connection 1'
 Dec 13 07:37:08 localhost NetworkManager[643]: <info>  [1639381028.5307] device (eth1): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
@@ -106,7 +78,7 @@ Dec 13 07:37:42 localhost systemd[1]: Stopped Run watchlog script every 30 secon
 Dec 13 07:37:42 localhost systemd[1]: Stopping Run watchlog script every 30 second.
 Dec 13 07:37:42 localhost systemd[1]: Started Run watchlog script every 30 second.
 Dec 13 07:40:29 localhost vagrant[3043]: Mon Dec 13 07:40:29 UTC 2021: I found word, Master!
-
+```
 **2. Из репозитория epel установить spawn-fcgi и переписать init-скрипт на unit-файл (имя service должно называться так же: spawn-fcgi).**
   
   * Устанавливаю spawn-fcgi и необходимые для него пакеты:*
