@@ -67,7 +67,7 @@ WantedBy=multi-user.target
 
 *Стартую таймер*
 
-```[root@localhost ~]# systemctl start watchlog.timer
+``` [root@localhost ~]# systemctl start watchlog.timer
 ```
 
 * Проверяю результат* 
