@@ -77,7 +77,7 @@ WantedBy=multi-user.target
 [root@localhost ~]# systemctl start watchlog.timer
 ```
 
-* Проверяю результат* 
+*Проверяю результат* 
 
 ```
 [root@localhost ~]# tail -f /var/log/messages
@@ -95,7 +95,7 @@ Dec 13 07:40:29 localhost vagrant[3043]: Mon Dec 13 07:40:29 UTC 2021: I found w
 
 **2. Из репозитория epel установить spawn-fcgi и переписать init-скрипт на unit-файл (имя service должно называться так же: spawn-fcgi).**
   
-  * Устанавливаю spawn-fcgi и необходимые для него пакеты:*
+  *Устанавливаю spawn-fcgi и необходимые для него пакеты:*
   
 ```
 [root@localhost ~]# yum install epel-release -y && yum install spawn-fcgi php php-cli
