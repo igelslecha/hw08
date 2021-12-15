@@ -7,15 +7,12 @@
 
 [root@localhost ~]# vi /etc/sysconfig/watchlog
 
-\# Configuration file for my watchdog service
-
-\# Place it to /etc/sysconfig
-
-\# File and word in that file that we will be monit
-
+```# Configuration file for my watchdog service
+# Place it to /etc/sysconfig
+# File and word in that file that we will be monit
 WORD="ALERT"
-
 LOG=/var/log/watchlog.log
+```
 
 *Затем создаем /var/log/watchlog.log и пишем туда строки на своё усмотрение, плюс ключевое слово ‘ALERT’*
 
