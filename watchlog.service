@@ -1,0 +1,9 @@
+[Unit]
+Description=My watchlog service
+[Service]
+Type=oneshot
+Environment=WORD="ALERT"
+Environment=LOG=/var/log/watchlog.log
+#EnvironmentFile=/etc/sysconfig/watchlog
+ExecStart=/opt/watchlog.sh $WORD $LOG
+
