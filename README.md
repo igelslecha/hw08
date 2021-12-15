@@ -5,7 +5,8 @@
 
 *Создал файл с конфигурацией для сервиса в директории /etc/sysconfig - из неё сервис будет брать необходимые переменные.*
 
-```[root@localhost ~]# vi /etc/sysconfig/watchlog
+```
+[root@localhost ~]# vi /etc/sysconfig/watchlog
 # Configuration file for my watchdog service
 # Place it to /etc/sysconfig
 # File and word in that file that we will be monit
@@ -15,7 +16,8 @@ LOG=/var/log/watchlog.log
 
 *Затем создаем /var/log/watchlog.log и пишем туда строки на своё усмотрение, плюс ключевое слово ‘ALERT’*
 
-```[root@localhost ~]# vi /var/log/watchlog.log
+```
+[root@localhost ~]# vi /var/log/watchlog.log
 hunter went to hunting in the deepest side of forest.
 when he had seen alien he louded ALERT
 and he isn't seen since this time.
@@ -23,7 +25,8 @@ and he isn't seen since this time.
 
 *Создаю скрипт*
 
-```[root@localhost ~]# vi /opt/watchlog.sh
+```
+[root@localhost ~]# vi /opt/watchlog.sh
 #!/bin/bash
 WORD=$1
 LOG=$2
@@ -38,12 +41,14 @@ fi
 
 *Сделал скрипт исполняемым*
 
-```[root@localhost ~]# chmod u+x /opt/watchlog.sh
+```
+[root@localhost ~]# chmod u+x /opt/watchlog.sh
 ```
 
 *Создал Юнит для сервиса:*
 
-```[root@localhost ~]# vi /etc/systemd/system/watchlog.service
+```
+[root@localhost ~]# vi /etc/systemd/system/watchlog.service
 [Unit]
 Description=My watchlog service
 [Service]
@@ -54,7 +59,8 @@ ExecStart=/opt/watchlog.sh $WORD $LOG
 
 *Создал Юнит для запуска каждые 30 секунд*
 
-```[root@localhost ~]# vi /etc/systemd/system/watchlog.timer
+```
+[root@localhost ~]# vi /etc/systemd/system/watchlog.timer
 [Unit]
 Description=Run watchlog script every 30 second
 [Timer]
@@ -67,12 +73,14 @@ WantedBy=multi-user.target
 
 *Стартую таймер*
 
-``` [root@localhost ~]# systemctl start watchlog.timer
+``` 
+[root@localhost ~]# systemctl start watchlog.timer
 ```
 
 * Проверяю результат* 
 
-```[root@localhost ~]# tail -f /var/log/messages
+```
+[root@localhost ~]# tail -f /var/log/messages
 Dec 13 07:37:08 localhost NetworkManager[643]: <info>  [1639381028.5275] device (eth1): state change: ip-config -> failed (reason 'ip-config-unavailable', sys-iface-state: 'managed')
 Dec 13 07:37:08 localhost NetworkManager[643]: <warn>  [1639381028.5301] device (eth1): Activation: failed for connection 'Wired connection 1'
 Dec 13 07:37:08 localhost NetworkManager[643]: <info>  [1639381028.5307] device (eth1): state change: failed -> disconnected (reason 'none', sys-iface-state: 'managed')
@@ -89,7 +97,8 @@ Dec 13 07:40:29 localhost vagrant[3043]: Mon Dec 13 07:40:29 UTC 2021: I found w
   
   * Устанавливаю spawn-fcgi и необходимые для него пакеты:*
   
-```[root@localhost ~]# yum install epel-release -y && yum install spawn-fcgi php php-cli
+```
+[root@localhost ~]# yum install epel-release -y && yum install spawn-fcgi php php-cli
 Installed:
   apr-1.6.3-12.el8.x86_64                                            apr-util-1.6.1-6.el8.x86_64
   apr-util-bdb-1.6.1-6.el8.x86_64                                    apr-util-openssl-1.6.1-6.el8.x86_64
@@ -104,7 +113,8 @@ Complete!
 ```
   *Раскомментирую строки с переменными в /etc/sysconfig/spawn-fcgi*
   
-```# You must set some working options before the "spawn-fcgi" service will work.
+```
+  # You must set some working options before the "spawn-fcgi" service will work.
   # If SOCKET points to a file, then this file is cleaned up by the init script.
   #
   # See spawn-fcgi(1) for all possible options.
@@ -116,7 +126,8 @@ Complete!
 
   *Создаю Юнит сервис*
   
-  ```[root@localhost ~]# vi /etc/systemd/system/spawn-fcgi.service
+  ```
+ [root@localhost ~]# vi /etc/systemd/system/spawn-fcgi.service
 [Unit]
 Description=Spawn-fcgi startup service by Otus
 After=network.target
@@ -132,12 +143,14 @@ WantedBy=multi-user.target
 
 *Запускаю*
   
-  ```[root@localhost ~]# systemctl start spawn-fcgi
+  ```
+  [root@localhost ~]# systemctl start spawn-fcgi
 ```
 
 *убеждаюсь, что сервис стартанул*
   
-  ```[root@localhost ~]# systemctl status spawn-fcgi
+  ```
+  [root@localhost ~]# systemctl status spawn-fcgi
      spawn-fcgi.service - Spawn-fcgi startup service by Otus
    Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; vendor preset: disabled)
    Active: active (running) since Mon 2021-12-13 08:04:13 UTC; 56s ago
@@ -186,7 +199,8 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   
   *создаю файл юнита*
   
-  ```[root@localhost ~]# vi /etc/systemd/system/httpd.service
+  ```
+  [root@localhost ~]# vi /etc/systemd/system/httpd.service
   [Unit]
   Description=The Apache HTTP Server
   After=network.target remote-fs.target nss-lookup.target
@@ -205,7 +219,8 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
 ```
 *Задаю опции для запуска веб-сервера с необходимым конфигурационным файлом*
   
-  ```[root@localhost ~]# vi /etc/sysconfig/httpd-first
+  ```
+  [root@localhost ~]# vi /etc/sysconfig/httpd-first
   # /etc/sysconfig/httpd-first
   OPTIONS=-f conf/first.conf
   [root@localhost ~]# vi /etc/sysconfig/httpd-second
@@ -215,14 +230,16 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   
   *Соответственно в директории с конфигами httpd создаю два конфига, first.conf и second.conf*
   
-  ```[root@localhost ~]# mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/first.conf
+  ```
+  [root@localhost ~]# mv /etc/httpd/conf/httpd.conf /etc/httpd/conf/first.conf
   [root@localhost ~]# cp /etc/httpd/conf/first.conf /etc/httpd/conf/second.conf
   [root@localhost ~]# vi /etc/httpd/conf/second.conf
 ```
 
 *Запускаю и проверяю порты*
   
-  ```[root@localhost ~]# systemctl start httpd@first
+  ```
+  [root@localhost ~]# systemctl start httpd@first
   [root@localhost ~]#  systemctl start httpd@second
   [root@localhost ~]# ss -tnulp | grep httpd
   tcp     LISTEN   0        128                    *:8080                *:*       users:(("httpd",pid=22556,fd=4),("httpd",pid=22555,fd=4),("httpd",pid=22554,fd=4),("httpd",pid=22551,fd=4))
@@ -234,30 +251,35 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
   
   *Устанавливаю wget*
   
-  ```[root@localhost ~]# yum install wget
+  ```
+  [root@localhost ~]# yum install wget
 ```
 
 *качаю jiry*
   
   
-```[root@localhost ~]# wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.21.0-x64.bin
+```
+[root@localhost ~]# wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.21.0-x64.bin
 ```
   
   *сделал файл исполняемым*
   
-  ```[root@localhost ~]# chmod u+x atlassian-jira-software-8.21.0-x64.bin
+  ```
+  [root@localhost ~]# chmod u+x atlassian-jira-software-8.21.0-x64.bin
 ```
 
   *устанавливаю*
   
-  ```[root@localhost ~]# ./atlassian-jira-software-8.21.0-x64.bin
+  ```
+  [root@localhost ~]# ./atlassian-jira-software-8.21.0-x64.bin
 ```
 
   *устанавливаю по умолчанию рекомендованное 1, порты меняю на 8081 и 8006 соотвественно, так как заняты из-за выполнения предыдущих заданий*
 
   *создаю юнит*
   
-  ```[root@localhost jira]# vi /etc/systemd/system/jira.service
+  ```
+  [root@localhost jira]# vi /etc/systemd/system/jira.service
   [Unit]
   Description=Atlassian Jira start for Otus
   After=network.target
@@ -272,7 +294,8 @@ Dec 13 08:04:13 localhost.localdomain systemd[1]: Started Spawn-fcgi startup ser
 
 *перегружаю и запускаю жиру, но... видимо много чего ещё нужно допиливать, чтобы её запустить*
 
-  ```[root@localhost jira]# systemctl daemon-reload
+  ```
+  [root@localhost jira]# systemctl daemon-reload
   [root@localhost jira]# systemctl enable jira.service
   Synchronizing state of jira.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
   Executing: /usr/lib/systemd/systemd-sysv-install enable jira
